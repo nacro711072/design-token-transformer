@@ -1,5 +1,4 @@
-const formattedVariables = require('./formattedVariables')
-const fileHeader = require('./fileHeader')
+import { fileHeader, formattedVariables } from 'style-dictionary/utils';
 
 const filteredTokens = (dictionary, filterFn) => {
   const filtered = dictionary.allTokens.filter(token => filterFn(token))
@@ -12,7 +11,7 @@ const filteredTokens = (dictionary, filterFn) => {
   }
 }
 
-module.exports = ({ dictionary, options, file }) => {
+export default ({ dictionary, options, file }) => {
   const opts = options ?? {}
   const { outputReferences } = opts
   const groupedTokens = {

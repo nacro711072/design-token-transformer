@@ -1,15 +1,15 @@
-const StyleDictionary = require('style-dictionary')
-const deepMerge = require("deepmerge");
-const webConfig = require('./src/web/index.js')
-const androidConfig = require("./src/android/index.js");
+import StyleDictionary from 'style-dictionary'
+import deepMerge from "deepmerge"
+import webConfig from './src/web/index.js'
+import androidConfig from "./src/android/index.js"
 
 StyleDictionary.registerTransform({
   name: 'size/px',
   type: 'value',
-  matcher: token => {
+  filter: token => {
     return (token.unit === 'pixel' || token.type === 'dimension') && token.value !== 0
   },
-  transformer: token => {
+  transform: token => {
     return `${token.value}px`
   }
 })
@@ -17,17 +17,17 @@ StyleDictionary.registerTransform({
 StyleDictionary.registerTransform({
   name: 'size/percent',
   type: 'value',
-  matcher: token => {
+  filter: token => {
     return token.unit === 'percent' && token.value !== 0
   },
-  transformer: token => {
+  transform: token => {
     return `${token.value}%`
   }
 })
 
 StyleDictionary.registerFilter({
   name: 'validToken',
-  matcher: function(token) {
+  filter: function(token) {
     return [
       "dimension",
       "string",
@@ -42,12 +42,12 @@ StyleDictionary.registerFilter({
   }
 })
 
-const StyleDictionaryExtended = StyleDictionary.extend({
+const StyleDictionaryExtended = new StyleDictionary({
   ...deepMerge.all([androidConfig, webConfig]),
   source: ["tokens/*.json"],
   platforms: {
     scss: {
-      transformGroup: "custom/css",
+      transformGroup: "scss",
       buildPath: "build/scss/",
       files: [
         {
@@ -57,19 +57,8 @@ const StyleDictionaryExtended = StyleDictionary.extend({
         },
       ],
     },
-    less: {
-      transformGroup: "custom/css",
-      buildPath: "build/less/",
-      files: [
-        {
-          destination: "_variables.less",
-          format: "less/variables",
-          filter: "validToken",
-        },
-      ],
-    },
     css: {
-      transformGroup: "custom/css",
+      transformGroup: "css",
       buildPath: "build/css/",
       files: [
         {
@@ -159,6 +148,52 @@ const StyleDictionaryExtended = StyleDictionary.extend({
         },
       ],
     },
+
+    "android": {
+      "transformGroup": "android",
+      "buildPath": "build/android/",
+      "files": [
+        {
+          "destination": "font_dimens.xml",
+          "format": "android/fontDimens"
+        },
+        {
+          "destination": "colors.xml",
+          "format": "android/colors"
+        }
+      ]
+    },
+
+    "compose": {
+      "transformGroup": "compose",
+      "buildPath": "build/compose/",
+      "files": [
+        {
+          "destination": "StyleDictionaryColor.kt",
+          "format": "compose/object",
+          "options": {
+            "className": "StyleDictionaryColor",
+            "packageName": "StyleDictionaryColor"
+          },
+          "filter": {
+            type: "color"
+          }
+        },
+        {
+          "destination": "StyleDictionarySize.kt",
+          "format": "compose/object",
+          "options": {
+            "className": "StyleDictionarySize",
+            "packageName": "StyleDictionarySize",
+            "type": "float"
+          },
+          "filter": {
+            type: "dimension"
+          }
+        }
+      ]
+    }
+
   },
 });
 console.log('StyleDictionaryExtended', StyleDictionaryExtended)
