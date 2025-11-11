@@ -1,7 +1,7 @@
-> [!WARNING] 
-> **This is just an example repo and not activly maintained!**  
-> Please refer to my [style dictionary utils](https://github.com/lukasoppermann/style-dictionary-utils) package for transformations, etc.
-> I am open to PRs.
+> This repo support android compose style transformer.
+> 
+> You can fork this repo to custom your transfrom format.
+
 
 # Design Token Transformer
 

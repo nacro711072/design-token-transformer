@@ -1,17 +1,28 @@
-const StyleDictionary = require('style-dictionary')
 
-module.exports = {
+import { formats, transformGroups } from 'style-dictionary/enums';
+
+import sizePxTransform from './sizePx.js';
+import webShadowsTransform from './webShadows.js';
+import webRadiusTransform from './webRadius.js';
+import webPaddingTransform from './webPadding.js';
+import webFontTransform from './webFont.js';
+import webGradientTransform from './webGradient.js';
+import colorToRgbaStringTransform from '../common/colorToRgbaString.js';
+import formatCss from './formatCss.js';
+
+
+export default {
   transform: {
-    'size/px': require('./sizePx'),
-    'web/shadow': require('./webShadows'),
-    'web/radius': require('./webRadius'),
-    'web/padding': require('./webPadding'),
-    'web/font': require('./webFont'),
-    'web/gradient': require('./webGradient'),
-    'color/hex8ToRgba': require('../common/colorToRgbaString')
+    'size/px': sizePxTransform,
+    'web/shadow': webShadowsTransform,
+    'web/radius': webRadiusTransform,
+    'web/padding': webPaddingTransform,
+    'web/font': webFontTransform,
+    'web/gradient': webGradientTransform,
+    'color/hex8ToRgba': colorToRgbaStringTransform
   },
   transformGroup: {
-    'custom/css': StyleDictionary.transformGroup.css.concat([
+    'custom/css': transformGroups.css.concat([
       'size/px',
       'web/shadow',
       'web/radius',
@@ -22,7 +33,7 @@ module.exports = {
     ])
   },
   format: {
-    'custom/css': require('./formatCss')
+    'custom/css': formatCss
   },
   action: {}
 }

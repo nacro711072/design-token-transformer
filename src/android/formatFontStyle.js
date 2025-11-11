@@ -1,11 +1,11 @@
-const { fileHeader } = require('style-dictionary').formatHelpers
-const camelCase = require('../common/camelCaseHelper')
+import { fileHeader } from 'style-dictionary/utils';
+import camelCase from '../common/camelCaseHelper.js'
 
 const letterSpacingToFloat = (letterSpacing, fontSize) => 1 + (letterSpacing / fontSize)
 
 const printDescription = description => (description && description !== '' && description !== null ? `    <!-- ${description} -->\n` : '')
 
-module.exports = ({ dictionary, platform, options = {}, file }) => {
+export default ({ dictionary, platform, options = {}, file }) => {
   const fontStyles = dictionary.allTokens
     // remove underlined
     .filter(compositeToken => compositeToken.original.value.textDecoration !== 'underline')

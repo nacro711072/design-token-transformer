@@ -1,8 +1,8 @@
-const { fileHeader } = require('style-dictionary').formatHelpers
+import { fileHeader } from 'style-dictionary/utils';
 
 const printDescription = description => (description && description !== '' && description !== null ? ` <!-- ${description} -->` : '')
 
-module.exports = ({ dictionary, platform, options = {}, file }) => {
+export default ({ dictionary, platform, options = {}, file }) => {
   const tokens = dictionary.allTokens
     .sort()
     // create style
