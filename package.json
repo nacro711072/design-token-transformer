@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "@ctrl/tinycolor": "^3.4.0",
-    "style-dictionary": "^3"
+    "fs-extra": "^11.3.2",
+    "style-dictionary": "^5"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
