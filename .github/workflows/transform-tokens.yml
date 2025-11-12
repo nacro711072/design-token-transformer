@@ -1,5 +1,6 @@
 # Name of the action visible in the action overview
 name: Transform tokens send from figma
+
 # this triggers the action when a post to "https://api.github.com/repos/:username/:repo/dispatches" comes in
 on:
   repository_dispatch:
@@ -14,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # this lets us work in the actual repository 
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       # if the folder named "tokens" does not exist, create it
       - name: mkdir "tokens" directory
         # change tokens here (and in line 32) if you want to use a differently named folder 
@@ -41,12 +42,14 @@ jobs:
         run: 'npm i && npm run transform-tokens'
       # We now create a pull request 
       - name: Create PR 
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v7
         with:
+          branch: feature/patch-${{ github.run_id }}
           commit-message: ${{ github.event.client_payload.commitMessage || 'Tokens updated' }}
           title: "Design tokens updated"
           body: "Design tokens have been updated via Figma and need to be reviewed."
+          committer: github[bot] <zoeknow@myfunnow.com>
+          author: github[bot] <zoeknow@myfunnow.com>
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # this parameter is optional and defaults to master but I am using main
           BRANCH_NAME: 'main'
